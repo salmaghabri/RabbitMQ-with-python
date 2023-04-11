@@ -12,8 +12,6 @@ class GUI:
 
     def create_widgets(self):
         self.window.title("Text Editor")
-        # print("fffffffffffff")
-        # Create a label for each text zone
         for text_zone in self.text_zones:
             label_text=f"Text Zone {text_zone.id}"
             if text_zone.user is not None :
@@ -30,7 +28,8 @@ class GUI:
             self.text_boxes[key]=text_box
 
             # text_box.insert('1.0',text_zone.text)
-            text_box.bind('<Key>', lambda event, text_zone=text_zone, text_box=text_box: self.on_text_changed(event, text_zone))
+            text_box.bind('<Button-1>', lambda event, text_zone=text_zone, text_box=text_box: self.on_click(event, text_zone))
+            text_box.bind('<KeyPress>', lambda event, text_zone=text_zone, text_box=text_box: self.on_text_changed(event, text_zone))
             # Disable the text box if the zone is assigned to a user
             # if text_zone.user is not None:
             #     text=text_box.get("1.0", "end-1c")
@@ -54,7 +53,10 @@ class GUI:
             # text_box.after(0,text_box.insert(tk.END,text_zone.text))
             # #text_box.get("1.0", "end-1c")
 
-            
+    def on_click(self,event,text_zone):
+        text_zone.producer.start_consuming_threads()
+        self.window.after(100, lambda: event.widget.unbind("<Button-1>"))
+
 
 
 
@@ -68,6 +70,8 @@ class GUI:
         text_box=event.widget
         text = text_box.get("1.0", "end-1c")
         text_zone.producer.publish_message(text,text_zone.get_queue_name() )
+       
+
 
 
     def send_message(self, event, text_zone, text_box):
