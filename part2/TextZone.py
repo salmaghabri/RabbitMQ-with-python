@@ -21,9 +21,9 @@ class TextZone:
     def remove_user(self):
         self.user = None
         
+    def update_text(self):
+        print('salut')
+        self.text=self.producer.msg
 
-    def add_text(self, text):
-        self.text += text
-        self.producer.publish_message(str(self.id), self.text)
 
 
