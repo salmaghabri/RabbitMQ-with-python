@@ -32,6 +32,7 @@ if __name__ == '__main__':
     render_thread.start()
     gui.add_text_zone(TextZone(4,Producer()))
     t1.assign_user(user)
+    t2.assign_user(user)
     consumer=Consumer(gui)
     consumer.start_consuming_threads()
     gui.start()
